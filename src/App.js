@@ -28,7 +28,7 @@ function App() {
     <Provider store={store}>
       <Router history={history}>
         <Switch>
-          <Route path="/" component={LoginPage} />
+          <Route path="/" component={LandingPage} />
           <Route path="/profile" component={ProfilePage} />
           <Route path="/login" component={LoginPage} />
         </Switch>
