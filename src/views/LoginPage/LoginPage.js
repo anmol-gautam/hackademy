@@ -1,4 +1,5 @@
 import React, { useState }  from "react";
+import { useDispatch } from "react-redux";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -21,6 +22,8 @@ import styles from "assets/jss/material-kit-react/views/loginPage.js";
 
 import image from "assets/img/landing-bg-4.jpg";
 
+import {login} from "../../actions/serviceActions";
+
 const useStyles = makeStyles(styles);
 
 export default function LoginPage(props) {
@@ -33,6 +36,7 @@ export default function LoginPage(props) {
   const [webcam, setWebcam] = useState('');
   const [screenShot, setScreenshot] = useState('');
   const [showPicture, setShowPicture] = useState(false);
+  const dispatch = useDispatch();
   
   const videoConstraints = {
     facingMode: "user"
@@ -56,7 +60,7 @@ export default function LoginPage(props) {
   const callService = (imageSrc) => {
     const actualString = imageSrc.substring(23);
     localStorage.setItem("loginImage", actualString);
-    console.log("hello from login");
+    dispatch(login());
   };
 
   return (

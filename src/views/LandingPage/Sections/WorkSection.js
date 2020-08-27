@@ -33,7 +33,6 @@ export default function WorkSection() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const onContinue = () => {
-    console.log('Hello')
     dispatch(register());
   }
 

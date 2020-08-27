@@ -28,9 +28,9 @@ function App() {
     <Provider store={store}>
       <Router history={history}>
         <Switch>
-          <Route path="/" component={LandingPage} />
-          <Route path="/profile" component={ProfilePage} />
-          <Route path="/login" component={LoginPage} />
+          <Route path="/" exact component={LandingPage} />
+          <Route path="/profile" exact component={ProfilePage} />
+          <Route path="/login" exact component={LoginPage} />
         </Switch>
     </Router>
   </Provider>

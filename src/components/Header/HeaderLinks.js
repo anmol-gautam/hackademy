@@ -1,29 +1,26 @@
 /*eslint-disable*/
 import React from "react";
-import DeleteIcon from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-// react components for routing our app without refresh
-import { Link } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "@material-ui/core/Tooltip";
-
-// @material-ui/icons
-import { Apps, CloudDownload } from "@material-ui/icons";
-
-// core components
-import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
+
+import {loginPage} from "../../actions/serviceActions";
 
 const useStyles = makeStyles(styles);
 
 export default function HeaderLinks(props) {
   const classes = useStyles();
+
+  const dispatch = useDispatch();
+  const onContinue = () => {
+    dispatch(loginPage());
+  }
   return (
     <List className={classes.list}>
       
@@ -39,6 +36,7 @@ export default function HeaderLinks(props) {
             color="info"
             target="/login-page"
             className={classes.margin}
+            onClick={onContinue}
           >Login</Button>
         </Tooltip>
       </ListItem>
