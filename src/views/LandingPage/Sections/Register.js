@@ -40,8 +40,7 @@ export default function WorkSection() {
     <div className={classes.section}>
       <GridContainer justify="center">
         <GridItem cs={12} sm={12} md={8}>
-          <h2 className={classes.title}>Register with Us</h2>
-          <h4 className={classes.description}>
+          <h4 className={classes.title}>
             Please provide your personal information and face id for registration.
           </h4>
           <form>

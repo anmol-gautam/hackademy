@@ -14,7 +14,6 @@ export default function DatePicker() {
               timeFormat={false}
               inputProps={{ placeholder: "Date of Birth" }}
               onChange={date => setStartDate(date)}
-              defaultValue={startDate}
             />
         </FormControl>
       </GridItem>
