@@ -38,9 +38,9 @@ export default function Register(props) {
   const dispatch = useDispatch();
   const onContinue = () => {
     console.log('Hello');
-    props.activeTab = '1';
+    props.setActiveTab(1);
   }
-
+  
   return (
     <div className={classes.section}>
       <GridContainer justify="center">

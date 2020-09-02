@@ -1,4 +1,4 @@
-import React,{useState}  from "react";
+import React,{useState, useEffect}  from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -32,6 +32,11 @@ export default function LandingPage(props) {
   const classes = useStyles();
   const [activeTab, setActiveTab] = useState(0);
 
+  useEffect(()=>{
+    console.log(activeTab)
+    const {callback} = activeTab;
+    callback && callback();
+  }, [activeTab]);
   return (
     <div>
       <Header
@@ -70,7 +75,7 @@ export default function LandingPage(props) {
                     tabButton: "Register",
                     tabIcon: Dashboard,
                     tabContent: (
-                      <Register activeTab="0"/>
+                      <Register setActiveTab={setActiveTab}/>
                     )
                   },
                   {
