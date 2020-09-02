@@ -60,6 +60,7 @@ export default function WebCamModal () {
 
   const callService = (imageSrc) => {
     const actualString = imageSrc.substring(23);
+    console.log(actualString)
     localStorage.setItem("registerImage", actualString);
   };
 
