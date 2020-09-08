@@ -1,4 +1,4 @@
-import React, { useState }  from "react";
+import React, { useState, useRef }  from "react";
 import { useDispatch } from "react-redux";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,32 +19,51 @@ import WebcamModal from "./WebcamModal";
 import DatePicker from "./DatePicker";
 import styles from "assets/jss/material-kit-react/views/landingPageSections/workStyle.js";
 
-import {register} from "../../../actions/serviceActions";
-
 const useStyles = makeStyles(styles);
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-
+const scrollToRef = (ref) => window.scrollTo(0, 500, ref.current.offsetTop);
 
 
 Transition.displayName = "Transition";
 
 export default function Register(props) {
   const classes = useStyles();
+  const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+
+  
+  
+  const focusDiv = useRef(null);
   const dispatch = useDispatch();
+
   const onContinue = () => {
     console.log('Hello');
     props.setActiveTab(1);
+    setShowSuccess(true);
+    scrollToRef(focusDiv);
+    
   }
   
   return (
     <div className={classes.section}>
       <GridContainer justify="center">
         <GridItem cs={12} sm={12} md={8}>
+        <div ref={focusDiv}>
+        { showSuccess && <SnackbarContent
+            message={
+              <span>
+                <b>Registration Complete!</b> Please Login to continue.
+              </span>
+            }
+            close
+            color="success"
+            icon={Check}
+          />}
+          </div>
         { showError && <SnackbarContent
             message={
               <span>
@@ -63,7 +82,7 @@ export default function Register(props) {
               <GridItem xs={12} sm={12} md={6}>
                 <CustomInput
                   labelText="First Name"
-                  id="name"
+                  id="fname"
                   formControlProps={{
                     fullWidth: true
                   }}
@@ -89,13 +108,14 @@ export default function Register(props) {
                   }}
                 />
               </GridItem>
-              <WebcamModal />
               <GridItem xs={12} sm={12} md={12}>
-                <Button color="info" block className={classes.submitButton} onClick={onContinue}>Save and Continue</Button>
+              <WebcamModal serviceType={'register'} />:
+              </GridItem>
+              <GridItem xs={12} sm={12} md={12}>
+                <Button color="info" block className={classes.submitButton} onClick={onContinue}>Register</Button>
               </GridItem>
             </GridContainer>
-            
-          </form>
+            </form>
         </GridItem>
       </GridContainer>
     </div>

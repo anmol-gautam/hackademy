@@ -1,24 +1,20 @@
 import React, { useState }  from "react";
+import { useDispatch } from "react-redux";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
-
-import IconButton from "@material-ui/core/IconButton";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-
 import Slide from "@material-ui/core/Slide";
 
 // @material-ui/icons
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
-import Close from "@material-ui/icons/Close";
 
 import Webcam from "react-webcam";
+
+import {login} from "../../../actions/serviceActions";
+import PropTypes from "prop-types";
 
 import styles from "assets/jss/material-kit-react/views/componentsSections/javascriptStyles.js";
 
@@ -32,12 +28,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 Transition.displayName = "Transition";
 
-export default function WebCamModal () {
+export default function WebCamModal (props) {
   const classes = useStyles();
-  const [classicModal, setClassicModal] = React.useState(false);
   const [webcam, setWebcam] = useState('');
   const [screenShot, setScreenshot] = useState('');
   const [showPicture, setShowPicture] = useState(false);
+  const dispatch = useDispatch();
 
   const videoConstraints = {
     facingMode: "user"
@@ -61,93 +57,60 @@ export default function WebCamModal () {
   const callService = (imageSrc) => {
     const actualString = imageSrc.substring(23);
     console.log(actualString)
-    localStorage.setItem("registerImage", actualString);
+    if(props.serviceType === 'login'){
+     localStorage.setItem("loginImage", actualString);
+     dispatch(login());
+    }
+    if(props.serviceType === 'register'){
+      localStorage.setItem("registerImage", actualString);
+     }
   };
 
-    return (
-        <GridItem xs={12} sm={12} md={12}>
-              <GridContainer>
-              <GridItem >
-                <Button
-                  color="info"
-                  block
-                  onClick={() => setClassicModal(true)}
-                >
-                  <CameraAltIcon className={classes.icon} />
-                  Take a Picture
-                </Button>
-                <Dialog
-                  classes={{
-                    root: classes.center,
-                    paper: classes.modal
-                  }}
-                  open={classicModal}
-                  TransitionComponent={Transition}
-                  keepMounted
-                  onClose={() => setClassicModal(false)}
-                  aria-labelledby="classic-modal-slide-title"
-                  aria-describedby="classic-modal-slide-description"
-                >
-                  <DialogTitle
-                    id="classic-modal-slide-title"
-                    disableTypography
-                    className={classes.modalHeader}
-                  >
-                    <IconButton
-                      className={classes.modalCloseButton}
-                      key="close"
-                      aria-label="Close"
-                      color="inherit"
-                      onClick={() => setClassicModal(false)}
-                    >
-                      <Close className={classes.modalClose} />
-                    </IconButton>
-                    <h4 className={classes.modalTitle}>Take a Picture</h4>
-                  </DialogTitle>
-                  <DialogContent
-                    id="classic-modal-slide-description"
-                    className={classes.modalBody}
-                  >
-                   { !showPicture && 
-                    <div id = 'webcam' className = 'center-align'>
-                      <Webcam
-                        audio={false}
-                        imageSmoothing={true}
-                        ref={setRef}
-                        screenshotFormat="image/jpeg"
-                        screenshotQuality={0.8}
-                        videoConstraints={videoConstraints}
-                      />
-                    </div>}
+    return (     
+              <GridItem xs={12} sm={12} md={12}>
+                { !showPicture && 
+                    <Webcam
+                    audio={false}
+                    imageSmoothing={true}
+                    ref={setRef}
+                    screenshotFormat="image/jpeg"
+                    screenshotQuality={0.8}
+                    width="100%"
+                    height="100%"
+                    mirrored={true}
+                    videoConstraints={videoConstraints}
+                  />}
                     {showPicture && 
                     <div className = 'center-align'>
                         <img src={screenShot} alt={"xyz"}/>
                     </div>
                     }
-                  </DialogContent>
-                  <DialogActions className={classes.modalFooter}>
-                    <Button id = "capture-image" color="info" 
+                    <GridItem xs={12} sm={12} md={12}>
+                    {!showPicture && 
+                    <Button id = "capture-image" color="info" block
                         onClick={capture} disabled={showPicture}>
                         <CameraAltIcon className={classes.icon} />
                           Capture Image
-                    </Button>
-                    <Button id = "retake-image"
+                    </Button>}
+                    {showPicture && 
+                    <Button id = "retake-image" block
                         onClick = {() => setShowPicture(false)}
                         color="info">
                         Retake Image
-                    </Button>
-                    {showPicture && <Button id = "submit-image" color="info" onClick = {onSubmit}>Submit Image</Button>}
-
-                    <Button
-                      onClick={() => setClassicModal(false)}
-                      color="rose"
-                    >
-                      Close
-                    </Button>
-                  </DialogActions>
-                </Dialog>
+                    </Button>}
+                    {showPicture && props.serviceType === 'login' &&
+                    <Button id = "submit-image" color="info" block onClick = {onSubmit}>Login</Button>}
+                    {showPicture && props.serviceType === 'register' &&
+                    <Button id = "submit-image" color="info" block onClick = {onSubmit}>Submit Image</Button>}
+                  </GridItem>
               </GridItem>
-            </GridContainer>
-          </GridItem>
     );
 }
+
+WebCamModal.defaultProps = {
+  serviceType: 'login'
+};
+
+WebCamModal.propTypes = {
+  serviceType: PropTypes.string,
+};
